@@ -9,7 +9,7 @@ FileList["*.k"].each do |source|
   langname = File.basename(source, ".k")
   filename = "#{langname}-kompiled/defx.xml"
   file filename => source do
-    sh "kompile #{source}"
+    sh %Q{kompile "#{source}"}
   end
   
   # the build task depends on .k files being built
@@ -18,7 +18,7 @@ FileList["*.k"].each do |source|
   # .<lang> files get run with krun
   FileList["*.#{langname}"].each do |program|
     task program do |t|
-      sh "krun #{t.name}"
+      sh %Q{krun --compiled-def "./#{langname}-kompiled" "#{t.name}"}
     end
     
     # the run task depends on .<lang> files being run
