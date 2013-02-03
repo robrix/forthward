@@ -7,7 +7,7 @@ module FORTHWARD-SYNTAX
                | Exp Exp [seqstrict,left]
   syntax Val ::= Atom | Quote
   syntax Atom ::= #Int
-  syntax Fn ::= "*" | "+" | "-" | "/" | "random" | "bind"
+  syntax Fn ::= "*" | "+" | "-" | "/" | "random" | "bind" | "apply"
   syntax Quote ::= "(" Exp ")" [onlyLabel, klabel(quote)]
 endmodule
 
@@ -35,7 +35,8 @@ module FORTHWARD
        <stack> (ListItem(V1) ListItem(V2)) => . ... </stack> [transition]
   rule <k> - => V1 -Int V2 ... </k>
        <stack> (ListItem(V1) ListItem(V2)) => . ... </stack> [transition]
-
+  rule <k> apply => E ... </k>
+       <stack> ListItem(quote(E:Exp)) => . ... </stack> 
   rule <k> I:Id => E ... </k>
        <state> ... I |-> quote(E:Exp) ... </state>
   rule <k> I:Id ~> bind ... </k>
