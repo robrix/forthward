@@ -7,7 +7,7 @@ module FORTHWARD-SYNTAX
                | Exp Exp [seqstrict,left]
   syntax Val ::= Atom | Quote
   syntax Atom ::= #Int
-  syntax Fn ::= "*" | "+" | "-" | "/" | "bind"
+  syntax Fn ::= "*" | "+" | "-" | "/" | "random" | "bind"
   syntax Quote ::= "(" Exp ")" [onlyLabel, klabel(quote)]
 endmodule
 
@@ -25,7 +25,8 @@ module FORTHWARD
   rule <k> (E1 E2) => E1 ~> E2 ... </k> [structural]
   rule <k> V:Val => . ... </k>
        <stack> (.List => ListItem(V)) ... </stack>
-
+  rule <k> random => 0 ... </k> [transition]
+  rule <k> random => 1 ... </k> [transition]
   rule <k> / => V1 /Int V2 ... </k>
        <stack> (ListItem(V1) ListItem(V2)) => . ... </stack> [transition]
   rule <k> * => V1 *Int V2 ... </k>
